@@ -13,6 +13,8 @@ dt = 0
 player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() / 2)
 player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
 
+ball_pos = pygame.Vector2((screen_width() / 2) + 500, screen.get_height() / 2)
+
 player_height = 100
 player_width = 20
 

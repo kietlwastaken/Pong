@@ -11,6 +11,7 @@ dt = 0
 
 
 player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() / 2)
+player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
 
 player_height = 100
 player_width = 20
@@ -27,8 +28,10 @@ while running:
 
     
     player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
+    player2 = pygame.Rect(player2_pos.x, player2_pos.y, player_width, player_height)
 
     pygame.draw.rect(screen, "white", player)
+    pygame.draw.rect(screen, "white", player2)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
@@ -36,14 +39,15 @@ while running:
     if keys[pygame.K_s]:
         player_pos.y += 300 * dt
     if keys[pygame.K_UP]:
-        player_pos.y -= 300 * dt
+        player2_pos.y -= 300 * dt
     if keys[pygame.K_DOWN]:
-        player_pos.y += 300 * dt
+        player2_pos.y += 300 * dt
 
-    if player_pos.y >= screen_height + player_height:
-        player_pos.y = screen_height
+    if player_pos.y >= screen_height - player_height:
+        player_pos.y = screen_height - player_height
     if player_pos.y <= 0:
         player_pos.y = 0
+    
 
 
     # flip() the display to put your work on screen

@@ -2,12 +2,18 @@ import pygame
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen_width = 1280
+screen_height = 720
+screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-player_pos = pygame.Vector2((screen.get_width() / 2) - 1000, screen.get_height() / 2)
+
+player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() / 2)
+
+player_height = 100
+player_width = 20
 
 while running:
     # poll for events
@@ -19,17 +25,26 @@ while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
-    pygame.draw.rectangle(screen, "white", player_pos, 40)
+    
+    player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
+
+    pygame.draw.rect(screen, "white", player)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= 300 * dt
     if keys[pygame.K_s]:
         player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+    if keys[pygame.K_UP]:
+        player_pos.y -= 300 * dt
+    if keys[pygame.K_DOWN]:
+        player_pos.y += 300 * dt
+
+    if player_pos.y >= screen_height + player_height:
+        player_pos.y = screen_height
+    if player_pos.y <= 0:
+        player_pos.y = 0
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()

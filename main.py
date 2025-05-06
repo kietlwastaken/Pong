@@ -14,7 +14,7 @@ player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() 
 player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
 
 ball_pos = pygame.Vector2((screen_width() / 2) + 500, screen.get_height() / 2)
-ball_dir = pygame.Vector2(0,0)
+ball_dir = pygame.Vector2(1,0)
 ball_radius = 20
 
 player_height = 100

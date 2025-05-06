@@ -48,6 +48,11 @@ while running:
     if player_pos.y <= 0:
         player_pos.y = 0
     
+    if player2_pos.y >= screen_height - player_height:
+        player2_pos.y = screen_height - player_height
+    if player2_pos.y <= screen_height:
+        player2_pos.y = screen_height
+    
 
 
     # flip() the display to put your work on screen

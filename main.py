@@ -14,6 +14,8 @@ player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() 
 player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
 
 ball_pos = pygame.Vector2((screen_width() / 2) + 500, screen.get_height() / 2)
+ball_dir = pygame.Vector2(0,0)
+ball_radius = 20
 
 player_height = 100
 player_width = 20
@@ -55,7 +57,20 @@ while running:
     if player2_pos.y <= screen_height:
         player2_pos.y = screen_height
     
+    ball_pos += ball_dir * dt
 
+    if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= 800:
+        ball_vel.x *= -1
+    if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= 600:
+        ball_vel.y *= -1
+
+    ball_rect = pygame.Rect(ball_pos.x - ball_radius, ball_pos.y - ball_radius, ball_radius * 2, ball_radius * 2)
+
+    # Bounce off paddles
+    if ball_rect.colliderect(player) and ball_vel.x < 0:
+        ball_vel.x *= -1
+    if ball_rect.colliderect(player2) and ball_vel.x > 0:
+        ball_vel.x *= -1
 
     # flip() the display to put your work on screen
     pygame.display.flip()

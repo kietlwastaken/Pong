@@ -60,7 +60,7 @@ while running:
         player2_pos.y = 0
 
     
-    ball_pos += ball_dir * dt
+    ball_pos += ball_vel * dt
 
     if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
         ball_vel.x *= -1

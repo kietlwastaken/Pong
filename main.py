@@ -14,8 +14,9 @@ player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() 
 player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
 
 ball_pos = pygame.Vector2((screen.get_width / 2), screen.get_height() / 2)
-ball_vel = pygame.Vector2(1,0)
+ball_vel = pygame.Vector2(2,1)
 ball_radius = 20
+ball_speed = 2
 
 player_height = 150
 player_width = 20
@@ -59,8 +60,9 @@ while running:
     if player2_pos.y <= 0:
         player2_pos.y = 0
 
-    
+    ball_vel = ball_vel.normalize() * ball_speed
     ball_pos += ball_vel * dt
+
 
     if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
         ball_vel.x *= -1

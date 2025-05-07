@@ -15,25 +15,30 @@ dt = 0
 player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
 player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
 
+ball_waiting = False
+
 player_score = 0
 player2_score = 0
 
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
-ball_vel = pygame.Vector2(2,1)
+ball_vel = pygame.Vector2(2, 1)
 ball_radius = 20
-ball_speed = 1000
+ball_speed = 300  # Adjust speed to suit your preference
 
 player_height = 150
 player_width = 20
 
 player_speed = 400
 
-def reset_ball():
-    global ball_pos, ball_vel
+def reset_ball(x):
+    global ball_pos, ball_vel, ball_waiting
     ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)
-    time.sleep(1)
-    ball_vel = pygame.Vector2(random.choice([1, -1]), random.uniform(-1, 1)).normalize() * ball_speed
+    ball_vel = pygame.Vector2(1 if random.choice([True, False]) else 2, random.uniform(-0.5, 0.5)).normalize()
+    ball_waiting = False  # Ball is no longer waiting; it's moving now
 
+
+def clamp(n, smallest, largest):
+    return max(smallest, min(n, largest))
 
 
 while running:
@@ -43,7 +48,6 @@ while running:
 
     screen.fill("black")
 
-    
     player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
     player2 = pygame.Rect(player2_pos.x, player2_pos.y, player_width, player_height)
 
@@ -72,46 +76,38 @@ while running:
     if player2_pos.y <= 0:
         player2_pos.y = 0
 
-    
-    ball_pos += ball_vel * dt
+    if not ball_waiting:  # Only move the ball if it's not waiting
+        ball_pos += ball_vel * dt* ball_speed
 
-
-    if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
-        ball_vel.x *= -1
-    if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= screen_height:
-        ball_vel.y *= -1
+    if not ball_waiting:
+        if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
+            ball_vel.x *= -1
+        if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= screen_height:
+            ball_vel.y *= -1
 
     ball_rect = pygame.Rect(ball_pos.x - ball_radius, ball_pos.y - ball_radius, ball_radius * 2, ball_radius * 2)
 
-
     if ball_rect.colliderect(player) and ball_vel.x < 0:
         offset = (ball_pos.y - player.centery) / (player_height / 2)
-        ball_vel.x *= -1
-        ball_vel.y = offset * 300
-        ball_vel = ball_vel.normalize() * ball_speed  # <- reapply speed
+        y_dir = clamp(offset, -0.7, 0.7)
+        ball_vel = pygame.Vector2(1, y_dir).normalize()
 
     if ball_rect.colliderect(player2) and ball_vel.x > 0:
         offset = (ball_pos.y - player2.centery) / (player_height / 2)
-        ball_vel.x *= -1
-        ball_vel.y = offset * 300
-        ball_vel = ball_vel.normalize() * ball_speed  # <- reapply speed
+        y_dir = clamp(offset, -0.7, 0.7)
+        ball_vel = pygame.Vector2(-1, y_dir).normalize()
 
-    
-
+    # Scoring and resetting the ball
     if ball_pos.x <= 0 + ball_radius:
         player2_score += 1
-        reset_ball()
+        reset_ball(2)
 
     if ball_pos.x >= screen_width - ball_radius:
         player_score += 1
-        reset_ball()
+        reset_ball(1)
 
-    # flip() the display to put your work on screen
     pygame.display.flip()
 
-    # limits FPS to 60
-    # dt is delta time in seconds since last frame, used for framerate-
-    # independent physics.
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(60) / 1000  # Update dt for frame rate independence
 
 pygame.quit()

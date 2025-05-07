@@ -15,24 +15,31 @@ dt = 0
 player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
 player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
 
+player_score = 0
+player2_score = 0
+
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
 ball_vel = pygame.Vector2(2,1)
 ball_radius = 20
-ball_speed = 2
+ball_speed = 200
 
 player_height = 150
 player_width = 20
 
 player_speed = 400
 
+def reset_ball():
+    global ball_pos, ball_vel
+    ball_pos = pygame.Vector2(screen_width/2, screen_height/2)
+    ball_vel = pygame.Vector2(0,0)
+    time.sleep(2)
+    ball_vel = pygame.Vector2((random.choice([1,-1])),(random.choice([1,-1])))
+
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
     screen.fill("black")
 
     
@@ -41,6 +48,8 @@ while running:
 
     pygame.draw.rect(screen, "white", player)
     pygame.draw.rect(screen, "white", player2)
+
+    pygame.draw.circle(screen, "white", ball_pos, ball_radius, width=0)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
@@ -85,12 +94,13 @@ while running:
         ball_vel.y = offset * 300
     
 
-    if ball_pos.x <= 0:
+    if ball_pos.x <= 0 + ball_radius:
         player2_score += 1
-        ball_pos = (screen_width/2, screen_height/2)
-        ball_vel = (0,0)
-        time.sleep(2)
-        ball_vel = ((random.choice([1,-1])),(random.choice([1,-1])))
+        reset_ball()
+
+    if ball_pos.x >= screen_width - ball_radius:
+        player_score += 1
+        reset_ball()
 
     # flip() the display to put your work on screen
     pygame.display.flip()

@@ -71,9 +71,15 @@ while running:
 
     # Bounce off paddles
     if ball_rect.colliderect(player) and ball_vel.x < 0:
+        offset = (ball_pos.y - player.centery) / (player_height / 2)
         ball_vel.x *= -1
+        ball_vel.y = offset * 300  # scale it to control bounce angle
+
     if ball_rect.colliderect(player2) and ball_vel.x > 0:
+        offset = (ball_pos.y - player2.centery) / (player_height / 2)
         ball_vel.x *= -1
+        ball_vel.y = offset * 300
+
 
     # flip() the display to put your work on screen
     pygame.display.flip()

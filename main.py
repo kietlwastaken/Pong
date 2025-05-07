@@ -21,7 +21,7 @@ player2_score = 0
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
 ball_vel = pygame.Vector2(2,1)
 ball_radius = 20
-ball_speed = 200
+ball_speed = 1000
 
 player_height = 150
 player_width = 20
@@ -30,10 +30,11 @@ player_speed = 400
 
 def reset_ball():
     global ball_pos, ball_vel
-    ball_pos = pygame.Vector2(screen_width/2, screen_height/2)
-    ball_vel = pygame.Vector2(0,0)
-    time.sleep(2)
-    ball_vel = pygame.Vector2((random.choice([1,-1])),(random.choice([1,-1])))
+    ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)
+    time.sleep(1)
+    ball_vel = pygame.Vector2(random.choice([1, -1]), random.uniform(-1, 1)).normalize() * ball_speed
+
+
 
 while running:
     for event in pygame.event.get():
@@ -71,7 +72,7 @@ while running:
     if player2_pos.y <= 0:
         player2_pos.y = 0
 
-    ball_vel = ball_vel.normalize() * ball_speed
+    
     ball_pos += ball_vel * dt
 
 
@@ -82,16 +83,19 @@ while running:
 
     ball_rect = pygame.Rect(ball_pos.x - ball_radius, ball_pos.y - ball_radius, ball_radius * 2, ball_radius * 2)
 
-    # Bounce off paddles
+
     if ball_rect.colliderect(player) and ball_vel.x < 0:
         offset = (ball_pos.y - player.centery) / (player_height / 2)
         ball_vel.x *= -1
-        ball_vel.y = offset * 300  # scale it to control bounce angle
+        ball_vel.y = offset * 300
+        ball_vel = ball_vel.normalize() * ball_speed  # <- reapply speed
 
     if ball_rect.colliderect(player2) and ball_vel.x > 0:
         offset = (ball_pos.y - player2.centery) / (player_height / 2)
         ball_vel.x *= -1
         ball_vel.y = offset * 300
+        ball_vel = ball_vel.normalize() * ball_speed  # <- reapply speed
+
     
 
     if ball_pos.x <= 0 + ball_radius:

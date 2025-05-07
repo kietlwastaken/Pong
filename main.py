@@ -1,4 +1,6 @@
 import pygame
+import random
+import time
 
 # pygame setup
 pygame.init()
@@ -10,10 +12,10 @@ running = True
 dt = 0
 
 
-player_pos = pygame.Vector2((screen.get_width() / 2) - 500, screen.get_height() / 2)
-player2_pos = pygame.Vector2((screen.get_width() / 2) + 500, screen.get_height() / 2)
+player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
+player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
 
-ball_pos = pygame.Vector2((screen.get_width / 2), screen.get_height() / 2)
+ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
 ball_vel = pygame.Vector2(2,1)
 ball_radius = 20
 ball_speed = 2
@@ -81,7 +83,14 @@ while running:
         offset = (ball_pos.y - player2.centery) / (player_height / 2)
         ball_vel.x *= -1
         ball_vel.y = offset * 300
+    
 
+    if ball_pos.x <= 0:
+        player2_score += 1
+        ball_pos = (screen_width/2, screen_height/2)
+        ball_vel = (0,0)
+        time.sleep(2)
+        ball_vel = ((random.choice([1,-1])),(random.choice([1,-1])))
 
     # flip() the display to put your work on screen
     pygame.display.flip()

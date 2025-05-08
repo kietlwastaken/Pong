@@ -30,13 +30,18 @@ player_width = 20
 
 player_speed = 400
 
-def reset_ball(x):
-    global ball_pos, ball_vel, ball_waiting
+ball_waiting = False
+ball_reset_time = 0  # Time at which to restart the ball
+
+
+def reset_ball(direction):
+    global ball_pos, ball_vel, ball_waiting, ball_reset_time
     ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)
-    pygame.display.flip()
-    time.sleep(2)
-    ball_vel = pygame.Vector2(1 if x==1 else -1, random.uniform(-0.5, 0.5)).normalize()
-    ball_waiting = False
+    ball_vel = pygame.Vector2(0, 0)
+    ball_waiting = True
+    ball_reset_time = pygame.time.get_ticks() + 2000  # Wait 2 seconds
+    ball_vel_direction = direction
+
 
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))

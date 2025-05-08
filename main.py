@@ -33,9 +33,10 @@ player_speed = 400
 def reset_ball(x):
     global ball_pos, ball_vel, ball_waiting
     ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)
-    ball_vel = pygame.Vector2(1 if random.choice([True, False]) else 2, random.uniform(-0.5, 0.5)).normalize()
-    ball_waiting = False  # Ball is no longer waiting; it's moving now
-
+    pygame.display.flip()
+    time.sleep(2)
+    ball_vel = pygame.Vector2(1 if x==1 else -1, random.uniform(-0.5, 0.5)).normalize()
+    ball_waiting = False
 
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
@@ -45,6 +46,8 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+
 
     screen.fill("black")
 
@@ -102,6 +105,7 @@ while running:
         player2_score += 1
         reset_ball(2)
 
+            
     if ball_pos.x >= screen_width - ball_radius:
         player_score += 1
         reset_ball(1)

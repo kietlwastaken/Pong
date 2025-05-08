@@ -11,6 +11,11 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
+# font setup
+font = pygame.font.Font(None, 74)  
+
+
+ball_vel_direction = 1
 
 player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
 player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
@@ -21,7 +26,7 @@ player_score = 0
 player2_score = 0
 
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
-ball_vel = pygame.Vector2(2, 1)
+ball_vel = pygame.Vector2(random.choice([1,-1]), random.choice([1,-1]))
 ball_radius = 20
 ball_speed = 300  # Adjust speed to suit your preference
 
@@ -46,12 +51,17 @@ def reset_ball(direction):
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
+dt = clock.tick(60) / 1000  # Initialize dt with a valid value
+
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+    if ball_waiting and pygame.time.get_ticks() >= ball_reset_time:
+        ball_vel = pygame.Vector2(1 if ball_vel_direction == 1 else -1, random.uniform(-0.5, 0.5)).normalize()
+        ball_waiting = False
 
 
     screen.fill("black")
@@ -59,8 +69,8 @@ while running:
     player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
     player2 = pygame.Rect(player2_pos.x, player2_pos.y, player_width, player_height)
 
-    pygame.draw.rect(screen, "white", player)
-    pygame.draw.rect(screen, "white", player2)
+    pygame.draw.rect(screen, (255, 0, 136), player)
+    pygame.draw.rect(screen, (174, 122, 191), player2)
 
     pygame.draw.circle(screen, "white", ball_pos, ball_radius, width=0)
 
@@ -85,9 +95,8 @@ while running:
         player2_pos.y = 0
 
     if not ball_waiting:  # Only move the ball if it's not waiting
-        ball_pos += ball_vel * dt* ball_speed
+        ball_pos += ball_vel * dt * ball_speed
 
-    if not ball_waiting:
         if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
             ball_vel.x *= -1
         if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= screen_height:
@@ -108,12 +117,24 @@ while running:
     # Scoring and resetting the ball
     if ball_pos.x <= 0 + ball_radius:
         player2_score += 1
-        reset_ball(2)
+        reset_ball(-1)
 
             
     if ball_pos.x >= screen_width - ball_radius:
         player_score += 1
         reset_ball(1)
+
+
+    ball_speed += 2 * dt
+
+    score_text_player1 = font.render(f"{player_score}", True, pygame.Color(255, 0, 136))
+    score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(174, 122, 191))
+    separator_text = font.render("  -  ", True, pygame.Color("white"))
+
+    screen.blit(score_text_player1, (screen_width / 2 - score_text_player1.get_width() - 100, 30))  # Player 1 score
+    screen.blit(separator_text, (screen_width / 2 - separator_text.get_width() / 2, 30))  # Separator
+    screen.blit(score_text_player2, (screen_width / 2 + 100, 30))  # Player 2 score
+
 
     pygame.display.flip()
 

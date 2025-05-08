@@ -108,11 +108,13 @@ while running:
         offset = (ball_pos.y - player.centery) / (player_height / 2)
         y_dir = clamp(offset, -0.7, 0.7)
         ball_vel = pygame.Vector2(1, y_dir).normalize()
+        winner = 255, 0, 136
 
     if ball_rect.colliderect(player2) and ball_vel.x > 0:
         offset = (ball_pos.y - player2.centery) / (player_height / 2)
         y_dir = clamp(offset, -0.7, 0.7)
         ball_vel = pygame.Vector2(-1, y_dir).normalize()
+        winner = (174, 122, 191)
 
     # Scoring and resetting the ball
     if ball_pos.x <= 0 + ball_radius:
@@ -129,7 +131,7 @@ while running:
 
     score_text_player1 = font.render(f"{player_score}", True, pygame.Color(255, 0, 136))
     score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(174, 122, 191))
-    separator_text = font.render("  -  ", True, pygame.Color("white"))
+    separator_text = font.render("  -  ", True, pygame.Color(winner))
 
     screen.blit(score_text_player1, (screen_width / 2 - score_text_player1.get_width() - 100, 30))  # Player 1 score
     screen.blit(separator_text, (screen_width / 2 - separator_text.get_width() / 2, 30))  # Separator

@@ -11,18 +11,25 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
+
 # font setup
 font = pygame.font.Font(None, 74)  
 
 
+# player variables
 player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
 player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
+
+player_height = 150
+player_width = 20
 
 player_score = 0
 player2_score = 0
 
+player_speed = 400
 
 
+# ball variables
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
 ball_vel = pygame.Vector2(random.choice([1,-1]), random.choice([1,-1]))
 ball_radius = 20
@@ -33,12 +40,8 @@ ball_reset_time = 2000
 ball_waiting = False
 ball_vel_direction = 0
 
-player_height = 150
-player_width = 20
 
-player_speed = 400
-
-
+# move ball to center screen upon scoring
 def reset_ball(direction):
     global ball_pos, ball_vel, ball_waiting, ball_reset_time
     ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)

@@ -35,7 +35,6 @@ player_width = 20
 
 player_speed = 400
 
-ball_waiting = False
 ball_reset_time = 0  # Time at which to restart the ball
 
 

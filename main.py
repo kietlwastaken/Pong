@@ -72,17 +72,20 @@ while running:
     pygame.draw.rect(screen, (174, 122, 191), player2)
 
     pygame.draw.circle(screen, "white", ball_pos, ball_radius, width=0)
-
+    
+    # movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= player_speed * dt
     if keys[pygame.K_s]:
         player_pos.y += player_speed * dt
+
     if keys[pygame.K_UP]:
         player2_pos.y -= player_speed * dt
     if keys[pygame.K_DOWN]:
         player2_pos.y += player_speed * dt
-
+    
+    # no going off screen
     if player_pos.y >= screen_height - player_height:
         player_pos.y = screen_height - player_height
     if player_pos.y <= 0:
@@ -93,6 +96,7 @@ while running:
     if player2_pos.y <= 0:
         player2_pos.y = 0
 
+
     if not ball_waiting:  # Only move the ball if it's not waiting
         ball_pos += ball_vel * dt * ball_speed
 
@@ -100,9 +104,11 @@ while running:
             ball_vel.x *= -1
         if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= screen_height:
             ball_vel.y *= -1
-
+    
+    # ball collision box
     ball_rect = pygame.Rect(ball_pos.x - ball_radius, ball_pos.y - ball_radius, ball_radius * 2, ball_radius * 2)
 
+    # ball x player collision
     if ball_rect.colliderect(player) and ball_vel.x < 0:
         offset = (ball_pos.y - player.centery) / (player_height / 2)
         y_dir = clamp(offset, -0.7, 0.7)
@@ -115,19 +121,20 @@ while running:
         ball_vel = pygame.Vector2(-1, y_dir).normalize()
         winner = (174, 122, 191)
 
+
     # Scoring and resetting the ball
     if ball_pos.x <= 0 + ball_radius:
         player2_score += 1
         reset_ball(-1)
 
-            
     if ball_pos.x >= screen_width - ball_radius:
         player_score += 1
         reset_ball(1)
 
-
+    # slowly speed up ball
     ball_speed += 2 * dt
 
+    # score text
     score_text_player1 = font.render(f"{player_score}", True, pygame.Color(255, 0, 136))
     score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(174, 122, 191))
     separator_text = font.render("  -  ", True, pygame.Color(winner))

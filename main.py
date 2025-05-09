@@ -51,17 +51,20 @@ def reset_ball(direction):
     ball_vel_direction = direction
 
 
+# if value higher than n set to n
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
 dt = clock.tick(60) / 1000  # Initialize dt with a valid value
 
 
+# main loop
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+    # ball 2 second wait
     if ball_waiting and pygame.time.get_ticks() >= ball_reset_time:
         ball_vel = pygame.Vector2(1 if ball_vel_direction == 1 else -1, random.uniform(-0.5, 0.5)).normalize()
         ball_waiting = False
@@ -69,6 +72,8 @@ while running:
 
     screen.fill("black")
 
+    
+    # player rect creation
     player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
     player2 = pygame.Rect(player2_pos.x, player2_pos.y, player_width, player_height)
 

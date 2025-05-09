@@ -68,11 +68,14 @@ while running:
     player = pygame.Rect(player_pos.x, player_pos.y, player_width, player_height)
     player2 = pygame.Rect(player2_pos.x, player2_pos.y, player_width, player_height)
 
+    
+    # drawing player and ball
     pygame.draw.rect(screen, (255, 0, 136), player)
     pygame.draw.rect(screen, (174, 122, 191), player2)
 
     pygame.draw.circle(screen, "white", ball_pos, ball_radius, width=0)
     
+
     # movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
@@ -85,6 +88,7 @@ while running:
     if keys[pygame.K_DOWN]:
         player2_pos.y += player_speed * dt
     
+
     # no going off screen
     if player_pos.y >= screen_height - player_height:
         player_pos.y = screen_height - player_height
@@ -97,16 +101,20 @@ while running:
         player2_pos.y = 0
 
 
-    if not ball_waiting:  # Only move the ball if it's not waiting
+    # move the ball
+    if not ball_waiting:
         ball_pos += ball_vel * dt * ball_speed
-
+        
+        # wall bouncing
         if ball_pos.x - ball_radius <= 0 or ball_pos.x + ball_radius >= screen_width:
             ball_vel.x *= -1
         if ball_pos.y - ball_radius <= 0 or ball_pos.y + ball_radius >= screen_height:
             ball_vel.y *= -1
     
+
     # ball collision box
     ball_rect = pygame.Rect(ball_pos.x - ball_radius, ball_pos.y - ball_radius, ball_radius * 2, ball_radius * 2)
+
 
     # ball x player collision
     if ball_rect.colliderect(player) and ball_vel.x < 0:
@@ -131,8 +139,10 @@ while running:
         player_score += 1
         reset_ball(1)
 
+
     # slowly speed up ball
     ball_speed += 2 * dt
+
 
     # score text
     score_text_player1 = font.render(f"{player_score}", True, pygame.Color(255, 0, 136))

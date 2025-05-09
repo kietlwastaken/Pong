@@ -15,27 +15,28 @@ dt = 0
 font = pygame.font.Font(None, 74)  
 
 
-ball_vel_direction = 1
-
 player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
 player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
-
-ball_waiting = False
 
 player_score = 0
 player2_score = 0
 
+
+
 ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
 ball_vel = pygame.Vector2(random.choice([1,-1]), random.choice([1,-1]))
 ball_radius = 20
-ball_speed = 300  # Adjust speed to suit your preference
+ball_speed = 300
+
+ball_reset_time = 2000
+
+ball_waiting = False
+ball_vel_direction = 0
 
 player_height = 150
 player_width = 20
 
 player_speed = 400
-
-ball_reset_time = 0  # Time at which to restart the ball
 
 
 def reset_ball(direction):

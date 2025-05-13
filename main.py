@@ -14,6 +14,7 @@ dt = 0
 
 # font setup
 font = pygame.font.Font(None, 74)  
+largefont = pygame.font.Font(None, 80)
 
 screen_width_center = screen_width / 2
 screen_height_center = screen_height / 2
@@ -58,8 +59,18 @@ def reset_ball(direction):
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
+
+# win
+def win(winnercol):
+    screen.fill(winnercol)
+    screen.blit(wintext, (screen_center))  # you win!!!
+    screen.blit(wintextbg, (screen_center))  # you win!!! bg
+
 dt = clock.tick(60) / 1000  # Initialize dt with a valid value
 
+winner = (0,0,0)
+player_col = (255, 0, 136)
+player2_col = (174, 122, 191)
 
 # main loop
 while running:
@@ -82,8 +93,8 @@ while running:
 
     
     # drawing player and ball
-    pygame.draw.rect(screen, (255, 0, 136), player)
-    pygame.draw.rect(screen, (174, 122, 191), player2)
+    pygame.draw.rect(screen, player_col, player)
+    pygame.draw.rect(screen, player2_col, player2)
 
     pygame.draw.circle(screen, "white", ball_pos, ball_radius, width=0)
     
@@ -133,13 +144,13 @@ while running:
         offset = (ball_pos.y - player.centery) / (player_height / 2)
         y_dir = clamp(offset, -0.7, 0.7)
         ball_vel = pygame.Vector2(1, y_dir).normalize()
-        winner = 255, 0, 136
+        winner = player_col
 
     if ball_rect.colliderect(player2) and ball_vel.x > 0:
         offset = (ball_pos.y - player2.centery) / (player_height / 2)
         y_dir = clamp(offset, -0.7, 0.7)
         ball_vel = pygame.Vector2(-1, y_dir).normalize()
-        winner = (174, 122, 191)
+        winner = player2_col
 
 
     # Scoring and resetting the ball
@@ -157,13 +168,22 @@ while running:
 
 
     # score text
-    score_text_player1 = font.render(f"{player_score}", True, pygame.Color(255, 0, 136))
-    score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(174, 122, 191))
+    score_text_player1 = font.render(f"{player_score}", True, pygame.Color(player_col))
+    score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(player2_col))
     separator_text = font.render("  -  ", True, pygame.Color(winner))
+    wintext = font.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(winner))
+    wintextbg = largefont.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
 
     screen.blit(score_text_player1, (screen_width_center - score_text_player1.get_width() - 100, 30))  # Player 1 score
     screen.blit(separator_text, (screen_width_center - separator_text.get_width() / 2, 30))  # Separator
     screen.blit(score_text_player2, (screen_width_center + 100, 30))  # Player 2 score
+
+
+    # winning
+    if player_score >= 5:
+        win(player_col)
+    if player2_score >= 5:
+        win(player2_col)
 
 
     pygame.display.flip()

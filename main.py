@@ -14,7 +14,7 @@ dt = 0
 
 # font setup
 font = pygame.font.Font(None, 74)  
-largefont = pygame.font.Font(None, 78)
+
 
 screen_width_center = screen_width / 2
 screen_height_center = screen_height / 2
@@ -178,7 +178,7 @@ while running:
     score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(player2_col))
     separator_text = font.render("  -  ", True, pygame.Color(winner))
     
-    wintextbg = largefont.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
+    wintextbg = font.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
 
     screen.blit(score_text_player1, (screen_width_center - score_text_player1.get_width() - 100, 30))  # Player 1 score
     screen.blit(separator_text, (screen_width_center - separator_text.get_width() / 2, 30))  # Separator

@@ -14,7 +14,7 @@ dt = 0
 
 # font setup
 font = pygame.font.Font(None, 74)  
-largefont = pygame.font.Font(None, 80)
+largefont = pygame.font.Font(None, 78)
 
 screen_width_center = screen_width / 2
 screen_height_center = screen_height / 2
@@ -63,8 +63,7 @@ def clamp(n, smallest, largest):
 # win
 def win(winnercol):
     screen.fill(winnercol)
-    screen.blit(wintext, (screen_center))  # you win!!!
-    screen.blit(wintextbg, (screen_center))  # you win!!! bg
+    screen.blit(wintextbg, (screen_center))  # you win!!!
 
 dt = clock.tick(60) / 1000  # Initialize dt with a valid value
 
@@ -80,7 +79,7 @@ while running:
 
     # ball 2 second wait
     if ball_waiting and pygame.time.get_ticks() >= ball_reset_time:
-        ball_vel = pygame.Vector2(1 if ball_vel_direction == 1 else -1, random.uniform(-0.5, 0.5)).normalize()
+        ball_vel = pygame.Vector2(1 if ball_vel_direction == -1 else 1, random.uniform(-0.5, 0.5)).normalize()
         ball_waiting = False
 
 
@@ -110,6 +109,13 @@ while running:
         player2_pos.y -= player_speed * dt
     if keys[pygame.K_DOWN]:
         player2_pos.y += player_speed * dt
+
+    # speed buttons
+    if keys[pygame.K_k]:
+        ball_speed += 20
+    if keys[pygame.K_l]:
+        ball_speed -= 20
+    
     
 
     # no going off screen
@@ -171,7 +177,7 @@ while running:
     score_text_player1 = font.render(f"{player_score}", True, pygame.Color(player_col))
     score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(player2_col))
     separator_text = font.render("  -  ", True, pygame.Color(winner))
-    wintext = font.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(winner))
+    
     wintextbg = largefont.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
 
     screen.blit(score_text_player1, (screen_width_center - score_text_player1.get_width() - 100, 30))  # Player 1 score

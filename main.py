@@ -15,10 +15,13 @@ dt = 0
 # font setup
 font = pygame.font.Font(None, 74)  
 
+screen_width_center = screen_width / 2
+screen_height_center = screen_height / 2
+screen_center = (screen_width_center, screen_height_center)
 
 # player variables
-player_pos = pygame.Vector2((screen_width / 2) - 500, screen_height / 2)
-player2_pos = pygame.Vector2((screen_width / 2) + 500, screen_height / 2)
+player_pos = pygame.Vector2((screen_width_center) - 500, screen_height_center)
+player2_pos = pygame.Vector2((screen_width_center) + 500, screen_height_center)
 
 player_height = 150
 player_width = 20
@@ -30,7 +33,7 @@ player_speed = 400
 
 
 # ball variables
-ball_pos = pygame.Vector2((screen_width / 2), screen_height / 2)
+ball_pos = pygame.Vector2(screen_center)
 ball_vel = pygame.Vector2(random.choice([1,-1]), random.choice([1,-1]))
 ball_radius = 20
 ball_speed = 300
@@ -44,7 +47,7 @@ ball_vel_direction = 0
 # move ball to center screen upon scoring
 def reset_ball(direction):
     global ball_pos, ball_vel, ball_waiting, ball_reset_time
-    ball_pos = pygame.Vector2(screen_width / 2, screen_height / 2)
+    ball_pos = pygame.Vector2(screen_center)
     ball_vel = pygame.Vector2(0, 0)
     ball_waiting = True
     ball_reset_time = pygame.time.get_ticks() + 2000  # Wait 2 seconds
@@ -158,9 +161,9 @@ while running:
     score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(174, 122, 191))
     separator_text = font.render("  -  ", True, pygame.Color(winner))
 
-    screen.blit(score_text_player1, (screen_width / 2 - score_text_player1.get_width() - 100, 30))  # Player 1 score
-    screen.blit(separator_text, (screen_width / 2 - separator_text.get_width() / 2, 30))  # Separator
-    screen.blit(score_text_player2, (screen_width / 2 + 100, 30))  # Player 2 score
+    screen.blit(score_text_player1, (screen_width_center - score_text_player1.get_width() - 100, 30))  # Player 1 score
+    screen.blit(separator_text, (screen_width_center - separator_text.get_width() / 2, 30))  # Separator
+    screen.blit(score_text_player2, (screen_width_center + 100, 30))  # Player 2 score
 
 
     pygame.display.flip()

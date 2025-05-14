@@ -197,5 +197,5 @@ def pygamerun(player_speed, ball_speed):
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000  # Update dt for frame rate independence
+    pygame.quit()
 
-pygame.quit()

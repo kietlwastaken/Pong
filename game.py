@@ -72,7 +72,7 @@ player_col = (255, 0, 136)
 player2_col = (174, 122, 191)
 
 # main loop
-while running:
+def pygamerun(player_speed, ball_speed):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

@@ -1,4 +1,4 @@
 import tkinter
 
-uiwidth = 
+uiwidth = 50
 

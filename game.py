@@ -61,8 +61,9 @@ def clamp(n, smallest, largest):
 
 # win
 def win(winnercol):
+    wintext = font.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
     screen.fill(winnercol)
-    screen.blit(wintextbg, (screen_center))  # you win!!!
+    screen.blit(wintext, (screen_center))  # you win!!!
 
 dt = clock.tick(60) / 1000  # Initialize dt with a valid value
 
@@ -72,7 +73,12 @@ player2_col = (174, 122, 191)
 
 # main loop
 def pygamerun(player_speed, ball_speed):
-    global running, dt, player_score, player2_score, ball_vel, ball_waiting, ball_reset_time, ball_vel_direction
+    global running, dt
+    global player_score, player2_score
+    global ball_pos, ball_vel, ball_waiting, ball_reset_time, ball_vel_direction
+    global screen, clock, font, screen_center
+    global player_pos, player2_pos
+    global winner
     running = True
     while running:
         for event in pygame.event.get():
@@ -180,7 +186,6 @@ def pygamerun(player_speed, ball_speed):
         score_text_player2 = font.render(f"{player2_score}", True, pygame.Color(player2_col))
         separator_text = font.render("  -  ", True, pygame.Color(winner))
         
-        wintextbg = font.render(f"you win!!!!!!!!!!!!!!!!!!!!!", True, pygame.Color(0,0,0))
 
         screen.blit(score_text_player1, (screen_width_center - score_text_player1.get_width() - 100, 30))  # Player 1 score
         screen.blit(separator_text, (screen_width_center - separator_text.get_width() / 2, 30))  # Separator
